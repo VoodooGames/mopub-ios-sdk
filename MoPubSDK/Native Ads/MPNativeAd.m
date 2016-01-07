@@ -81,7 +81,7 @@
     // before attaching the new ad view to it.
     [[self.associatedView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    UIView<MPNativeAdRendering> *adView = [self.renderer retrieveViewWithAdapter:self.adAdapter error:error];
+    UIView<MPNativeAdRendering> *adView = (UIView<MPNativeAdRendering> *)[self.renderer retrieveViewWithAdapter:self.adAdapter error:error];
 
     if (adView) {
         if (!self.hasAttachedToView) {
