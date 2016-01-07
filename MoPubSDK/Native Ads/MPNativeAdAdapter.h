@@ -5,7 +5,7 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol MPNativeAdAdapter;
+@protocol MPNativeAdAdapter, MPNativeAdRendering;
 
 /**
  * Classes that conform to the `MPNativeAdAdapter` protocol can have an
@@ -158,6 +158,7 @@
  * of this event.
  */
 - (void)willAttachToView:(UIView *)view;
+- (void)willAttachToView:(UIView *)view withMPView:(UIView<MPNativeAdRendering>*)mpView;
 
 /**
  * This method will be called if your implementation provides a DAA icon through the properties dictionary

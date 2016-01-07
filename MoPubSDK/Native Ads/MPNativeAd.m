@@ -80,17 +80,16 @@
     // We always return the same MPNativeView (self.associatedView) so we need to remove its subviews
     // before attaching the new ad view to it.
     [[self.associatedView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-
-    UIView *adView = [self.renderer retrieveViewWithAdapter:self.adAdapter error:error];
+    
+    UIView<MPNativeAdRendering> *adView = [self.renderer retrieveViewWithAdapter:self.adAdapter error:error];
 
     if (adView) {
         if (!self.hasAttachedToView) {
-            [self willAttachToView:self.associatedView];
+            [self willAttachToView:self.associatedView withMPView:adView];
             self.hasAttachedToView = YES;
         }
-
         adView.frame = self.associatedView.bounds;
-        [self.associatedView addSubview:adView];
+        [self.associatedView insertSubview:adView atIndex:0];
 
         return self.associatedView;
     } else {
@@ -148,10 +147,13 @@
 
 #pragma mark - Internal
 
-- (void)willAttachToView:(UIView *)view
+- (void)willAttachToView:(UIView *)view withMPView:(UIView<MPNativeAdRendering>*)mpView
 {
     if ([self.adAdapter respondsToSelector:@selector(willAttachToView:)]) {
         [self.adAdapter willAttachToView:view];
+    }
+    else if ([self.adAdapter respondsToSelector:@selector(willAttachToView:withMPView:)]) {
+        [self.adAdapter willAttachToView:view withMPView:mpView];
     }
 }
 
