@@ -35,13 +35,13 @@ Pod::Spec.new do |s|
 
   s.subspec "iAd" do |si|
     si.source_files = "AdNetworkSupport/iAd/*.{h,m}"
-    si.dependency 'mopub-ios-sdk/MoPubSDK'
+    si.dependency 'Mopub/MoPubSDK'
     si.frameworks = "iAd"
   end
 
   s.subspec "AdMob" do |sa|
     sa.source_files = "AdNetworkSupport/GoogleAdMob/*.{h,m}"
-    sa.dependency 'mopub-ios-sdk/MoPubSDK'
+    sa.dependency 'Mopub/MoPubSDK'
     sa.dependency 'Google-Mobile-Ads-SDK', '7.1.0'
     sa.pod_target_xcconfig = { 'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/Google-Mobile-Ads-SDK/GoogleMobileAdsSdkiOS-7.1.0"' }
    end
