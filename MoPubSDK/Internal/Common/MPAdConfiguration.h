@@ -85,4 +85,7 @@ extern NSString * const kAdTypeNativeVideo;
 - (NSString *)adResponseHTMLString;
 - (NSString *)clickDetectionURLPrefix;
 
+/** Voodoo */
+- (NSString*)getCustomEventClassName;
+
 @end

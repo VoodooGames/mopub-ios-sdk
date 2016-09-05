@@ -70,6 +70,10 @@
     }
 }
 
+- (NSString*)getCustomEventClassName {
+    return [[self.manager getConfiguration] getCustomEventClassName];
+}
+
 - (BOOL)ready
 {
     return self.manager.ready;

@@ -81,6 +81,9 @@
  */
 @property (nonatomic, assign, getter=isTesting) BOOL testing;
 
+/** Voodoo */
+- (NSString*)getCustomEventClassName;
+
 /** @name Loading an Interstitial Ad */
 
 /**

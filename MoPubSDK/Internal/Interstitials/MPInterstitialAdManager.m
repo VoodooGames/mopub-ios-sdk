@@ -17,6 +17,7 @@
 #import "MPInterstitialAdManagerDelegate.h"
 #import "MPLogging.h"
 #import "MPError.h"
+#import "MPAdConfiguration.h"
 
 @interface MPInterstitialAdManager ()
 
@@ -116,6 +117,10 @@
 - (id)interstitialDelegate
 {
     return [self.delegate interstitialDelegate];
+}
+
+- (MPAdConfiguration*)getConfiguration {
+    return self.configuration;
 }
 
 #pragma mark - MPAdServerCommunicatorDelegate

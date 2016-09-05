@@ -199,6 +199,10 @@ NSString * const kAdTypeNativeVideo = @"json_video";
     return self.interceptURLPrefix.absoluteString ? self.interceptURLPrefix.absoluteString : @"";
 }
 
+- (NSString*)getCustomEventClassName {
+    return NSStringFromClass(self.customEventClass);
+}
+
 #pragma mark - Private
 
 - (MPAdType)adTypeFromHeaders:(NSDictionary *)headers

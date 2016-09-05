@@ -8,7 +8,8 @@
 #import "MPAdServerCommunicator.h"
 #import "MPBaseInterstitialAdapter.h"
 
-@class CLLocation;
+
+@class CLLocation, MPAdConfiguration;
 @protocol MPInterstitialAdManagerDelegate;
 
 @interface MPInterstitialAdManager : NSObject <MPAdServerCommunicatorDelegate,
@@ -24,5 +25,8 @@
                             location:(CLLocation *)location
                              testing:(BOOL)testing;
 - (void)presentInterstitialFromViewController:(UIViewController *)controller;
+
+/** Voodoo */
+- (MPAdConfiguration*)getConfiguration;
 
 @end
