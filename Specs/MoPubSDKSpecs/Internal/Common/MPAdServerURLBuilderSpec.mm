@@ -8,6 +8,7 @@
 #import "MPAPIEndpoints.h"
 #import "MPGlobalSpecHelper.h"
 #import "NSDate+MPSpecs.h"
+#import <Cedar/Cedar.h>
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
@@ -36,7 +37,7 @@ describe(@"MPAdServerURLBuilder", ^{
                                                keywords:nil
                                                location:nil
                                                 testing:YES];
-            expected = [NSString stringWithFormat:@"http://testing.ads.mopub.com/m/ad?v=8&udid=%@&id=guy&nv=%@",
+            expected = [NSString stringWithFormat:@"https://testing.ads.mopub.com/m/ad?v=8&udid=%@&id=guy&nv=%@",
                         [MPIdentityProvider identifier],
                         MP_SDK_VERSION];
             URL.absoluteString should contain(expected);
@@ -45,7 +46,7 @@ describe(@"MPAdServerURLBuilder", ^{
                                                keywords:nil
                                                location:nil
                                                 testing:NO];
-            expected = [NSString stringWithFormat:@"http://ads.mopub.com/m/ad?v=8&udid=%@&id=guy&nv=%@",
+            expected = [NSString stringWithFormat:@"https://ads.mopub.com/m/ad?v=8&udid=%@&id=guy&nv=%@",
                         [MPIdentityProvider identifier],
                         MP_SDK_VERSION];
             URL.absoluteString should contain(expected);
@@ -390,21 +391,21 @@ describe(@"MPAdServerURLBuilder", ^{
         });
     });
 
-    context(@"when HTTPS is enabled", ^{
+    context(@"when HTTPS is disabled", ^{
         beforeEach(^{
-            [MPAPIEndpoints setUsesHTTPS:YES];
-        });
-
-        afterEach(^{
             [MPAPIEndpoints setUsesHTTPS:NO];
         });
 
-        it(@"should return HTTPS URLs", ^{
+        afterEach(^{
+            [MPAPIEndpoints setUsesHTTPS:YES];
+        });
+
+        it(@"should return HTTP URLs", ^{
             URL = [MPAdServerURLBuilder URLWithAdUnitID:@"guy"
                                                keywords:nil
                                                location:nil
                                                 testing:NO];
-            expected = [NSString stringWithFormat:@"https://ads.mopub.com/m/ad?v=8&udid=%@&id=guy&nv=%@",
+            expected = [NSString stringWithFormat:@"http://ads.mopub.com/m/ad?v=8&udid=%@&id=guy&nv=%@",
                         [MPIdentityProvider identifier],
                         MP_SDK_VERSION];
             URL.absoluteString should contain(expected);

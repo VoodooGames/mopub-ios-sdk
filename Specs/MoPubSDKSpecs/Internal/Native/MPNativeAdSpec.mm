@@ -12,6 +12,8 @@
 #import "MPStaticNativeAdRenderer.h"
 #import "MPStaticNativeAdRendererSettings.h"
 #import "MPNativeView.h"
+#import "MPNativeAdAdapter.h"
+#import <Cedar/Cedar.h>
 
 using namespace Cedar::Matchers;
 using namespace Cedar::Doubles;
@@ -71,6 +73,22 @@ describe(@"MPNativeAd", ^{
                 nativeAdAdapter = nice_fake_for(@protocol(MPNativeAdAdapter));
                 starRatingNativeAd = [[MPNativeAd alloc] initWithAdAdapter:nativeAdAdapter];
                 nativeAd.renderer = renderer;
+            });
+        });
+    });
+
+    context(@"retrieveAdViewForSizeCalculationWithError:", ^{
+        __block NSError *error;
+        __block UIView *adView;
+
+        context(@"when an ad can be successfully rendered", ^{
+            beforeEach(^{
+                spy_on(renderer);
+                adView = [nativeAd retrieveAdViewForSizeCalculationWithError:&error];
+            });
+
+            it(@"retrieves registered ad view", ^{
+                [adView isKindOfClass:[FakeNativeAdRenderingClass class]] should be_truthy;
             });
         });
     });
@@ -170,11 +188,29 @@ describe(@"MPNativeAd", ^{
     });
 
     context(@"nativeViewWillMoveToSuperview:", ^{
-        it(@"should forward the call to its delegate", ^{
-            UIView *view = [UIView new];
-            spy_on(renderer);
-            [nativeAd performSelector:@selector(nativeViewWillMoveToSuperview:) withObject:view];
-            renderer should have_received(@selector(adViewWillMoveToSuperview:)).with(view);
+        context(@"if the delegate responds to adViewWillMoveToSuperview:", ^{
+            it(@"should forward the call to its delegate", ^{
+                UIView *view = [UIView new];
+                spy_on(renderer);
+                [nativeAd performSelector:@selector(nativeViewWillMoveToSuperview:) withObject:view];
+                renderer should have_received(@selector(adViewWillMoveToSuperview:)).with(view);
+            });
+        });
+
+        context(@"if the delegate doesn't respond to adViewWillMoveToSuperview:", ^{
+            beforeEach(^{
+                id<CedarDouble, MPNativeAdRenderer> fakeRenderer = nice_fake_for(@protocol(MPNativeAdRenderer));
+
+                fakeRenderer reject_method(@selector(adViewWillMoveToSuperview:));
+                nativeAd.renderer = fakeRenderer;
+            });
+
+            it(@"should not forward (and crash) the call to its delegate", ^{
+                ^{
+                    UIView *view = [UIView new];
+                    [nativeAd performSelector:@selector(nativeViewWillMoveToSuperview:) withObject:view];
+                } should_not raise_exception;
+            });
         });
     });
     context(@"interaction with the ad", ^{

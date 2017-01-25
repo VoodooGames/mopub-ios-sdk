@@ -190,7 +190,10 @@
 
 - (void)nativeViewWillMoveToSuperview:(UIView *)superview
 {
-    [self.renderer adViewWillMoveToSuperview:superview];
+    if ([self.renderer respondsToSelector:@selector(adViewWillMoveToSuperview:)])
+    {
+        [self.renderer adViewWillMoveToSuperview:superview];
+    }
 }
 
 #pragma mark - MPNativeAdAdapterDelegate

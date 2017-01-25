@@ -6,21 +6,15 @@
 //
 
 #import "FakeMPInstanceProvider.h"
-#import <EventKit/EventKit.h>
-#import <EventKitUI/EventKitUI.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "MPAdWebView.h"
 #import "FakeMPTimer.h"
-#import "MRImageDownloader.h"
 #import "MRBundleManager.h"
 #import <FBAudienceNetwork/FBAudienceNetwork.h>
 
 @interface MPInstanceProvider (ThirdPartyAdditions)
 
 #pragma mark - Third Party Integrations Category Interfaces
-#pragma mark iAd
-- (ADInterstitialAd *)buildADInterstitialAd;
-- (ADBannerView *)buildADBannerViewWithAdType:(ADAdType)adType;
 
 #pragma mark Chartboost
 - (Chartboost *)buildChartboost;
@@ -234,51 +228,6 @@
     }];
 }
 
-- (MRCalendarManager *)buildMRCalendarManagerWithDelegate:(id<MRCalendarManagerDelegate>)delegate
-{
-    return [self returnFake:self.fakeMRCalendarManager
-                     orCall:^{
-                         return [super buildMRCalendarManagerWithDelegate:delegate];
-                     }];
-}
-
-- (EKEventEditViewController *)buildEKEventEditViewControllerWithEditViewDelegate:(id <EKEventEditViewDelegate>)editViewDelegate
-{
-    if (self.fakeEKEventEditViewController) {
-        self.fakeEKEventEditViewController.editViewDelegate = editViewDelegate;
-        return self.fakeEKEventEditViewController;
-    } else {
-        return [super buildEKEventEditViewControllerWithEditViewDelegate:editViewDelegate];
-    }
-}
-
-- (EKEventStore *)buildEKEventStore
-{
-    return [self returnFake:self.fakeEKEventStore
-                     orCall:^{
-                        return [super buildEKEventStore];
-                     }];
-}
-
-- (MRPictureManager *)buildMRPictureManagerWithDelegate:(id<MRPictureManagerDelegate>)delegate
-{
-    return [self returnFake:self.fakeMRPictureManager
-                     orCall:^{
-                         return [super buildMRPictureManagerWithDelegate:delegate];
-                     }];
-}
-
-- (MRImageDownloader *)buildMRImageDownloaderWithDelegate:(id<MRImageDownloaderDelegate>)delegate
-{
-    if (self.fakeImageDownloader) {
-        self.fakeImageDownloader.delegate = delegate;
-        return self.fakeImageDownloader;
-    } else {
-        return [super buildMRImageDownloaderWithDelegate:delegate];
-    }
-
-}
-
 - (MRVideoPlayerManager *)buildMRVideoPlayerManagerWithDelegate:(id<MRVideoPlayerManagerDelegate>)delegate
 {
     return [self returnFake:self.fakeMRVideoPlayerManager
@@ -340,38 +289,6 @@
 }
 
 #pragma mark - Third Party Integrations
-
-#pragma mark iAd
-
-- (ADBannerView *)buildADBannerViewWithAdType:(ADAdType)adType
-{
-    ADBannerView *returnValue;
-
-    switch (adType) {
-        case ADAdTypeBanner:
-            returnValue = self.fakeADBannerView;
-            break;
-        case ADAdTypeMediumRectangle:
-            returnValue = self.fakeADBannerViewMediumRectangle;
-            break;
-        default:
-            returnValue = self.fakeADBannerView;
-            break;
-    }
-
-    return [self returnFake:returnValue
-                     orCall:^{
-                         return [super buildADBannerViewWithAdType:adType];
-                     }];
-}
-
-- (ADInterstitialAd *)buildADInterstitialAd
-{
-    return [self returnFake:self.fakeADInterstitialAd
-                     orCall:^{
-                         return [super buildADInterstitialAd];
-                     }];
-}
 
 #pragma mark - Facebook
 
