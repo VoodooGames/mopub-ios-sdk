@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   
   s.name = "Mopub"
-  s.version = "4.3.0"
+  s.version = "4.10.1"
   s.summary = "The Official MoPub Client SDK allows developers to easily monetize their apps by showing banner, interstitial, and native ads."
   s.description  = <<-DESC
   MoPub is a hosted ad serving solution built specifically for mobile publishers.
